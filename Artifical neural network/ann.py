@@ -38,6 +38,27 @@ X_test = sc.transform(X_test)
 # Part 2 - Now let's make the ANN!
 #___________________________________________________________________
 # Importing the Keras libraries and packages
+import keras
+from keras.models import Sequential
+from keras.layers import Dense
+
+#initalising a ANN
+classifier=Sequential()
+
+#Adding a input layer and First hidden layer
+classifier.add(Dense(units=6,activation='relu',kernel_initializer='uniform',input_dim=11))
+
+#Adding 2nd hidden Layer
+classifier.add(Dense(units=6,activation='relu',kernel_initializer='uniform'))
+
+#Adding output layer
+ classifier.add(Dense(units=1,activation='sigmoid',kernel_initializer='uniform'))
+ 
+#compling ANN
+classifier.compile(optimizer="adam",loss="binary_crossentropy",metrics=['accuracy'])
+
+#fitting ANN to training set
+classifier.fit(X_train,y_train,batch_size=10,epochs=100) 
 
 
 #Part-3 -Make prediction and evaluating results

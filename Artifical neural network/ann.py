@@ -46,13 +46,13 @@ from keras.layers import Dense
 classifier=Sequential()
 
 #Adding a input layer and First hidden layer
-classifier.add(Dense(units=6,activation='relu',kernel_initializer='uniform',input_dim=11))
+classifier.add(Dense(units=6,activation='relu',init='uniform',input_dim=11))
 
 #Adding 2nd hidden Layer
 classifier.add(Dense(units=6,activation='relu',kernel_initializer='uniform'))
 
 #Adding output layer
- classifier.add(Dense(units=1,activation='sigmoid',kernel_initializer='uniform'))
+classifier.add(Dense(units=1,activation='sigmoid',kernel_initializer='uniform'))
  
 #compling ANN
 classifier.compile(optimizer="adam",loss="binary_crossentropy",metrics=['accuracy'])
@@ -63,8 +63,23 @@ classifier.fit(X_train,y_train,batch_size=10,epochs=100)
 
 #Part-3 -Make prediction and evaluating results
 #____________________________________________________________________
+
+# Predicting a single new observation
+"""Predict if the customer with the following informations will leave the bank:
+Geography: France
+Credit Score: 600
+Gender: Male
+Age: 40
+Tenure: 3
+Balance: 60000
+Number of Products: 2
+Has Credit Card: Yes
+Is Active Member: Yes
+Estimated Salary: 50000"""
+
 # Predicting the Test set results
 y_pred = classifier.predict(X_test)
+
 
 # Making the Confusion Matrix
 from sklearn.metrics import confusion_matrix

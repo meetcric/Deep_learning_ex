@@ -41,17 +41,17 @@ X_test = sc.transform(X_test)
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.layers import Dropout
+#from keras.layers import Dropout
 
 #initalising a ANN
 classifier=Sequential()
 
 #Adding a input layer and First hidden layer
 classifier.add(Dense(units=6,activation='relu',kernel_initializer='uniform',input_dim=11))
-classifier.add(Dropout(rate=0.1))
+#classifier.add(Dropout(rate=0.1))
 #Adding 2nd hidden Layer
 classifier.add(Dense(units=6,activation='relu',kernel_initializer='uniform'))
-classifier.add(Dropout(rate=0.1))
+#classifier.add(Dropout(rate=0.1))
 #Adding output layer
 classifier.add(Dense(units=1,activation='sigmoid',kernel_initializer='uniform'))
  
@@ -110,3 +110,22 @@ variance=accuracies.std()
 #use dropout regularization to reduce ovefitting if needed
 
 #Tuning ANN
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import GridSearchCV
+from keras.models import Sequential
+from keras.layers import Dense
+def build_classifier(optimizer):
+    classifier = Sequential()
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+    classifier.compile(optimizer = optimizer, loss = 'binary_crossentropy', metrics = ['accuracy'])
+    return classifier
+classifier=KerasClassifier(build_fn=build_classifier)
+parameters = {'batch_size': [25, 32],
+              'epochs': [100, 500],
+              'optimizer': ['adam', 'rmsprop']}
+grid_serach=GridSearchCV(estimator=classifier,param_grid=parameters,scoring='accuracy',cv=10)
+grid_serach=grid_serach.fit(X_train,y_train)
+best_parameter=grid_serach.best_params_
+best_score=grid_serach.best_score_
